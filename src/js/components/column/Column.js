@@ -1,7 +1,8 @@
 import React from 'react';
 import Tasks from './Tasks'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
-import { Card, Input, Icon } from 'antd';
+import { Card } from 'antd';
+import ListHeader from './ListHeader'
 
 class Column extends React.Component {
 
@@ -36,6 +37,10 @@ class Column extends React.Component {
       editIndex: true,
       title: this.props.column.title
     })
+  }
+
+  updateTitleEdit = (e) => {
+    this.setState({ title: e.target.value })
   }
 
   handleDelete = () => {
@@ -100,7 +105,6 @@ class Column extends React.Component {
 
     newTasks[taskId] = newTask
 
-
     const newColumns = this.props.columns.map(column => {
       if (column.id === this.props.column.id) {
         column.taskIds = column.taskIds.concat(taskId)
@@ -108,8 +112,6 @@ class Column extends React.Component {
       }
       return column
     })
-
-    //console.log(newColumns)
 
     this.props.updateTasks(newColumns, newTasks)
 
@@ -122,24 +124,24 @@ class Column extends React.Component {
         {(provided) => (
           <div  {...provided.draggableProps} ref={provided.innerRef}>
             <Card className='columnList' hoverable={true}>
-              {
-                this.props.column.title === '' || this.state.editIndex ?
-                  <h3 className="title" {...provided.dragHandleProps} >
-                    <Input size="large" placeholder='List Title' onChange={(e) => this.setState({ title: e.target.value })} type="text" key={this.props.column.id} defaultValue={this.props.column.title} />
-                    <Icon type="save" theme="filled" className='titleConfirm' onClick={(e) => this.handleSaveClick(e)}/>
-                  </h3> :
-                  <h3 {...provided.dragHandleProps}>
-                  <span className='title'>
-                    {this.props.column.title}
-                  </span>
-                    <Icon type="edit" theme="filled" className='editTitle' onClick={this.handleTitleEditClick}/>
-                    <Icon type="delete" theme="filled" className='columnDelete' onClick={this.handleDelete} />
-                  </h3>
-              }
+              <ListHeader
+                provided={provided}
+                editIndex={this.state.editIndex}
+                updateTitleEdit={this.updateTitleEdit}
+                column={this.props.column}
+                handleDelete={this.handleDelete}
+                handleTitleEditClick={this.handleTitleEditClick}
+                handleSaveClick={this.handleSaveClick}
+              />
               <Droppable key={this.props.column.id} droppableId={this.props.column.id} type='task'>
                 {(provided, snapshot) => (
                   <div ref={provided.innerRef} {...provided.droppableProps} style={getListStyle(snapshot.isDraggingOver)}>
-                    <Tasks addTask={this.addTask} onTaskUpdate={this.props.onTaskUpdate} handleTaskDelete={this.handleTaskDelete} tasks={this.props.tasks} />
+                    <Tasks
+                      addTask={this.addTask}
+                      onTaskUpdate={this.props.onTaskUpdate}
+                      handleTaskDelete={this.handleTaskDelete}
+                      tasks={this.props.tasks}
+                    />
                     {provided.placeholder}
                   </div>
                 )}
