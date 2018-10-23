@@ -13,7 +13,7 @@ class App extends React.Component {
         this.state = initialData
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.updateCounter(this.props.columns.length)
         this.props.updateTaskCounter(Object.keys(this.props.tasks).length)
     }
@@ -31,7 +31,7 @@ class App extends React.Component {
 
         //update column order
 
-        if (type === 'column') { 
+        if (type === 'column') {
             const newColumnOrder = Array.from(this.props.columnOrder)
             newColumnOrder.splice(source.index, 1)
             newColumnOrder.splice(destination.index, 0, draggableId)
@@ -43,7 +43,7 @@ class App extends React.Component {
 
         const start = this.props.columns.find(column => column.id === source.droppableId)
         const finish = this.props.columns.find(column => column.id === destination.droppableId)
-        
+
         //reorder task in same column
 
         if (start === finish) {
@@ -155,7 +155,20 @@ class App extends React.Component {
                                 const tasks = column.taskIds.map(taskId => this.props.tasks[taskId])
                                 return (
                                     <div className='container' key={column.id}>
-                                        <Column updateTaskCounter={this.props.updateTaskCounter} counter={this.props.tasksCounter} key={column.id} updateTasks={this.props.updateTasks} allTasks={this.props.tasks} deleteColumn={this.props.deleteColumn} columns={this.props.columns} columnOrder={this.props.columnOrder} column={column} index={index} tasks={tasks} onTitleUpdate={this.updateTitle} onTaskUpdate={this.handleUpdateTask}/>
+                                        <Column
+                                            updateTaskCounter={this.props.updateTaskCounter}
+                                            counter={this.props.tasksCounter} key={column.id}
+                                            updateTasks={this.props.updateTasks}
+                                            allTasks={this.props.tasks}
+                                            deleteColumn={this.props.deleteColumn}
+                                            columns={this.props.columns}
+                                            columnOrder={this.props.columnOrder}
+                                            column={column}
+                                            index={index}
+                                            tasks={tasks}
+                                            onTitleUpdate={this.updateTitle}
+                                            onTaskUpdate={this.handleUpdateTask}
+                                        />
                                     </div>
                                 )
                             })}
@@ -175,8 +188,8 @@ const mapStateToProps = store => ({
     tasks: store.tasksReducer.tasks,
     columns: store.tasksReducer.columns,
     columnOrder: store.tasksReducer.columnOrder,
-    counter : store.tasksReducer.counter,
-    tasksCounter : store.tasksReducer.tasksCounter
+    counter: store.tasksReducer.counter,
+    tasksCounter: store.tasksReducer.tasksCounter
 })
 
 const mapDispatchToProps = {
