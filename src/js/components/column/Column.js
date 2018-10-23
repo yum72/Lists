@@ -77,8 +77,6 @@ class Column extends React.Component {
       return column
     })
 
-    console.log(newColumns)
-
     const newTasks = {
       ...this.props.allTasks
     }
@@ -124,6 +122,7 @@ class Column extends React.Component {
         {(provided) => (
           <div  {...provided.draggableProps} ref={provided.innerRef}>
             <Card className='columnList' hoverable={true}>
+
               <ListHeader
                 provided={provided}
                 editIndex={this.state.editIndex}
@@ -133,6 +132,7 @@ class Column extends React.Component {
                 handleTitleEditClick={this.handleTitleEditClick}
                 handleSaveClick={this.handleSaveClick}
               />
+
               <Droppable key={this.props.column.id} droppableId={this.props.column.id} type='task'>
                 {(provided, snapshot) => (
                   <div ref={provided.innerRef} {...provided.droppableProps} style={getListStyle(snapshot.isDraggingOver)}>
@@ -146,6 +146,7 @@ class Column extends React.Component {
                   </div>
                 )}
               </Droppable>
+              
             </Card>
           </div>
         )}

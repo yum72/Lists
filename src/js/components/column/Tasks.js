@@ -1,6 +1,7 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd'
-import { Input, Icon } from 'antd';
+import { Icon } from 'antd';
+import SingleTask from '../Task/SingleTask'
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: 'none',
@@ -46,6 +47,10 @@ class Tasks extends React.Component {
 
   }
 
+  updateTaskInput = (e) => {
+    this.setState({ task: e.target.value })
+  }
+
   handleaddTask = () => {
     this.setState({
       ...this.state,
@@ -64,25 +69,24 @@ class Tasks extends React.Component {
             return (
               <Draggable key={task.id} draggableId={task.id} index={index}>
                 {(provided, snapshot) => (
-                  <li  {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} key={task.id}
+                  <li
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef} key={task.id}
                     style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)
                     }>
-                    {
-                      task.content === '' || this.state.taskEdit === task.id ?
-                        <div className='taskContainer'>
-                          <span className='task'>
-                            <Input className='taskInput' onChange={(e) => this.setState({ task: e.target.value })} type="text" key={task.id} defaultValue={this.state.task} />
-                          </span>
-                          <Icon type="save" theme="filled" className='saveTask' onClick={() => this.handleSave(task.id)}/>
-                        </div> :
-                        <div className='taskContainer'>
-                          <span className='task'>
-                            {task.content}
-                          </span>
-                          <Icon type="edit" theme="filled" className='taskEdit' onClick={() => this.handleEdit(task.content, task.id)}/>
-                          <Icon type="delete" theme="filled" className='taskDelete' onClick={() => this.props.handleTaskDelete(task.id)} />
-                        </div>
-                    }
+
+                    <SingleTask
+                      provided={provided}
+                      task={task}
+                      handleTaskDelete={this.props.handleTaskDelete}
+                      taskEdit={this.state.taskEdit}
+                      handleEdit={this.handleEdit}
+                      updateTaskInput={this.updateTaskInput}
+                      defaultValue={this.state.task}
+                      handleSave={this.handleSave}
+                    />
+                    
                   </li>
                 )}
               </Draggable>
@@ -90,11 +94,11 @@ class Tasks extends React.Component {
           })
         }
         <div className='taskContainer'>
-        {
-          this.state.taskEdit === '' && this.state.task === '' ?
-          <Icon type="plus-circle" theme="filled" className='addTask' onClick={this.handleaddTask} />:
-          <div/>
-        }
+          {
+            this.state.taskEdit === '' && this.state.task === '' ?
+              <Icon type="plus-circle" theme="filled" className='addTask' onClick={this.handleaddTask} /> :
+              <div />
+          }
         </div>
       </ul>
     )
