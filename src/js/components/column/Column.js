@@ -13,7 +13,6 @@ class Column extends React.Component {
 
   handleSaveClick = (e) => {
     let title = this.state.title
-    console.log(this.props.column.id)
 
     if (title === '' && this.props.column.title !== '') {
       title = this.props.column.title
@@ -52,7 +51,6 @@ class Column extends React.Component {
     this.props.deleteColumn(newColumns, newOrder)
 
     if (this.props.tasks.length) {
-      console.log(this.props.tasks)
 
       const newTasks = {
         ...this.props.allTasks
@@ -67,7 +65,7 @@ class Column extends React.Component {
   }
 
   handleTaskDelete = (taskID) => {
-    console.log(taskID)
+
     const newColumns = this.props.columns.map(column => {
       if (column.id === this.props.column.id && column.taskIds.includes(taskID)) {
         let index = column.taskIds.indexOf(taskID)
@@ -146,7 +144,7 @@ class Column extends React.Component {
                   </div>
                 )}
               </Droppable>
-              
+
             </Card>
           </div>
         )}

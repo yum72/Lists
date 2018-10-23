@@ -29,7 +29,6 @@ class Tasks extends React.Component {
   handleSave = (id) => {
 
     let task = this.state.task
-    console.log(task)
 
     if (task !== '') {
 
@@ -86,7 +85,7 @@ class Tasks extends React.Component {
                       defaultValue={this.state.task}
                       handleSave={this.handleSave}
                     />
-                    
+
                   </li>
                 )}
               </Draggable>

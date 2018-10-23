@@ -1,10 +1,10 @@
 import React from 'react'
-import initialData from '../data/data'
-import Column from './components/column/Column'
+import initialData from '../../data/data'
+import Column from './column/Column'
 import { connect } from 'react-redux'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
-import * as Actions from './Actions/actions'
-import '../css/styles.css'
+import * as Actions from '../Actions/actions'
+import '../../css/styles.css'
 
 
 class App extends React.Component {
@@ -138,13 +138,9 @@ class App extends React.Component {
             ...this.props.tasks,
         }
 
-        console.log(id, newTasks)
-
         newTasks[id].content = content
 
         this.props.addTasks(newTasks)
-
-        console.log(newTasks)
 
     }
 
